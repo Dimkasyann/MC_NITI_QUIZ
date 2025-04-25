@@ -1,0 +1,9 @@
+{
+  "bot_token": "8044955044:AAENneUIJB9lQKHKeGuGxhsFIWR9X5Tlcz0",
+  "admin_id": 1768526947,
+  "time_zone": "Europe/Moscow",
+  "daily_quiz_time": "09:00",
+  "reminder_time": "08:50",
+  "hint_interval_minutes": 30,
+  "max_hints": 3
+}
