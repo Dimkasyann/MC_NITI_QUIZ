@@ -1,0 +1,14 @@
+{
+  "123456789": {
+    "coins": 25,
+    "last_answer_date": "2023-10-14",
+    "answered_today": false,
+    "used_hint": false
+  },
+  "987654321": {
+    "coins": 15,
+    "last_answer_date": "2023-10-14",
+    "answered_today": false,
+    "used_hint": false
+  }
+}
