@@ -216,8 +216,8 @@ def main():
     daily_quiz_time = TIME_ZONE.localize(datetime.strptime(DAILY_QUIZ_TIME, "%H:%M"))
     reminder_time = TIME_ZONE.localize(datetime.strptime(REMINDER_TIME, "%H:%M"))
 
-    job_queue.run_daily(send_daily_quiz, daily_quiz_time.time())
-    job_queue.run_daily(reminder, reminder_time.time())
+    job_queue.run_daily(send_daily_quiz, daily_quiz_time.time(), days=(0, 1, 2, 3, 4, 5, 6), context=None)
+    job_queue.run_daily(reminder, reminder_time.time(), days=(0, 1, 2, 3, 4, 5, 6), context=None)
 
     updater.start_polling()
     updater.idle()
