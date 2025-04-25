@@ -66,16 +66,27 @@ def send_daily_quiz(context: CallbackContext):
         quiz = data[current_date]
         for user_id, user_data in users.items():
             if not user_data.get("answered_today", False):
-                context.bot.send_message(
-                    chat_id=int(user_id),
-                    text=f"💡 Загадка дня:\n\n{quiz['question']}",
-                    reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Подсказка", callback_data="hint")]])
-                )
+                try:
+                    context.bot.send_message(
+                        chat_id=int(user_id),
+                        text=f"💡 Загадка дня:\n\n{quiz['question']}",
+                        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Подсказка", callback_data="hint")]])
+                    )
+                except Exception as e:
+                    print(f"Не удалось отправить загадку пользователю {user_id}: {e}")
     else:
         print(f"Загадка для {current_date} не найдена!")
 
-def reminder(update: Update, context: CallbackContext):
-    update.message.reply_text("⏰ Через 10 минут появится новая загадка!")
+def reminder(context: CallbackContext):
+    users = load_users()
+    for user_id in users:
+        try:
+            context.bot.send_message(
+                chat_id=int(user_id),
+                text="⏰ Через 10 минут появится новая загадка!"
+            )
+        except Exception as e:
+            print(f"Не удалось отправить напоминание пользователю {user_id}: {e}")
 
 def check_answer(update: Update, context: CallbackContext):
     user_id = str(update.effective_user.id)
@@ -216,8 +227,8 @@ def main():
     daily_quiz_time = TIME_ZONE.localize(datetime.strptime(DAILY_QUIZ_TIME, "%H:%M"))
     reminder_time = TIME_ZONE.localize(datetime.strptime(REMINDER_TIME, "%H:%M"))
 
-    job_queue.run_daily(send_daily_quiz, daily_quiz_time.time(), days=(0, 1, 2, 3, 4, 5, 6), context=None)
-    job_queue.run_daily(reminder, reminder_time.time(), days=(0, 1, 2, 3, 4, 5, 6), context=None)
+    job_queue.run_daily(send_daily_quiz, daily_quiz_time.time(), days=(0, 1, 2, 3, 4, 5, 6))
+    job_queue.run_daily(reminder, reminder_time.time(), days=(0, 1, 2, 3, 4, 5, 6))
 
     updater.start_polling()
     updater.idle()
